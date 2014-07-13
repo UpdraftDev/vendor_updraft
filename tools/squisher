@@ -37,7 +37,7 @@ if [ ! -f "$OTAPACKAGE" ]; then
     exit 1
 fi
 
-OPTICHARGER=$ANDROID_BUILD_TOP/vendor/slim/tools/opticharger
+OPTICHARGER=$ANDROID_BUILD_TOP/vendor/updraft/tools/opticharger
 QUIET=-q
 DELETE_BINS="applypatch applypatch_static check_prereq recovery updater"
 DELETE_MEDIA="*.qmg"
@@ -173,10 +173,10 @@ CAMERARESOLUTION=`sed -n -e'/ro\.camera\.res/s/^.*=//p' $REPACK/ota/system/build
 #fi
 
 # Swap boot.img
-PREBUILTKERNEL=$OUT/system/slimkernel/boot.img
+PREBUILTKERNEL=$OUT/system/updraftkernel/boot.img
 if [ -e "$PREBUILTKERNEL" ];then
    rm -f $REPACK/ota/boot.img
-   mv -f $REPACK/ota/system/slimkernel/boot.img $REPACK/ota/boot.img
+   mv -f $REPACK/ota/system/updraftkernel/boot.img $REPACK/ota/boot.img
 fi
 
 # Determine what to name the new signed package

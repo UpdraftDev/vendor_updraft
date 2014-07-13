@@ -26,27 +26,27 @@ PRODUCT_PROPERTY_OVERRIDES += \
 
 # Backup Tool
 PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/bin/backuptool.sh:system/bin/backuptool.sh \
-    vendor/slim/prebuilt/common/bin/backuptool.functions:system/bin/backuptool.functions \
-    vendor/slim/prebuilt/common/bin/50-slim.sh:system/addon.d/50-slim.sh \
-    vendor/slim/prebuilt/common/bin/99-backup.sh:system/addon.d/99-backup.sh \
-    vendor/slim/prebuilt/common/etc/backup.conf:system/etc/backup.conf
+    vendor/updraft/prebuilt/common/bin/backuptool.sh:system/bin/backuptool.sh \
+    vendor/updraft/prebuilt/common/bin/backuptool.functions:system/bin/backuptool.functions \
+    vendor/updraft/prebuilt/common/bin/50-slim.sh:system/addon.d/50-slim.sh \
+    vendor/updraft/prebuilt/common/bin/99-backup.sh:system/addon.d/99-backup.sh \
+    vendor/updraft/prebuilt/common/etc/backup.conf:system/etc/backup.conf
 
-# SLIM-specific init file
+# UPDRAFT-specific init file
 PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/etc/init.local.rc:root/init.slim.rc
+    vendor/updraft/prebuilt/common/etc/init.local.rc:root/init.updraft.rc
 
 # Copy latinime for gesture typing
 PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/lib/libjni_latinime.so:system/lib/libjni_latinime.so
+    vendor/updraft/prebuilt/common/lib/libjni_latinime.so:system/lib/libjni_latinime.so
 
 # Copy libgif for Nova Launcher 3.0
 PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/lib/libgif.so:system/lib/libgif.so
+    vendor/updraft/prebuilt/common/lib/libgif.so:system/lib/libgif.so
 
 # SELinux filesystem labels
 PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel
+    vendor/updraft/prebuilt/common/etc/init.d/50selinuxrelabel:system/etc/init.d/50selinuxrelabel
 
 # Enable SIP+VoIP on all targets
 PRODUCT_COPY_FILES += \
@@ -54,17 +54,13 @@ PRODUCT_COPY_FILES += \
 
 # Don't export PS1 in /system/etc/mkshrc.
 PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/etc/mkshrc:system/etc/mkshrc \
-    vendor/slim/prebuilt/common/etc/sysctl.conf:system/etc/sysctl.conf
+    vendor/updraft/prebuilt/common/etc/mkshrc:system/etc/mkshrc \
+    vendor/updraft/prebuilt/common/etc/sysctl.conf:system/etc/sysctl.conf
 
 PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/etc/init.d/00banner:system/etc/init.d/00banner \
-    vendor/slim/prebuilt/common/etc/init.d/90userinit:system/etc/init.d/90userinit \
-    vendor/slim/prebuilt/common/bin/sysinit:system/bin/sysinit
-
-# Workaround for NovaLauncher zipalign fails
-PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/app/NovaLauncher.apk:system/app/NovaLauncher.apk
+    vendor/updraft/prebuilt/common/etc/init.d/00banner:system/etc/init.d/00banner \
+    vendor/updraft/prebuilt/common/etc/init.d/90userinit:system/etc/init.d/90userinit \
+    vendor/updraft/prebuilt/common/bin/sysinit:system/bin/sysinit
 
 # Embed SuperUser
 SUPERUSER_EMBEDDED := true
@@ -79,12 +75,7 @@ PRODUCT_PACKAGES += \
 
 # Optional packages
 PRODUCT_PACKAGES += \
-    Basic \
-    HoloSpiralWallpaper \
-    NoiseField \
-    Galaxy4 \
-    LiveWallpapersPicker \
-    PhaseBeam
+    Basic
 
 # DSPManager
 PRODUCT_PACKAGES += \
@@ -92,23 +83,11 @@ PRODUCT_PACKAGES += \
     libcyanogen-dsp \
     audio_effects.conf
 
-# Extra Optional packages
-PRODUCT_PACKAGES += \
-    SlimCenter \
-    SlimFileManager \
-    LatinIME \
-    BluetoothExt \
-    DashClock
-
 # Extra tools
 PRODUCT_PACKAGES += \
-    openvpn \
     e2fsck \
     mke2fs \
-    tune2fs \
-    mount.exfat \
-    fsck.exfat \
-    mkfs.exfat
+    tune2fs
 
 # Stagefright FFMPEG plugin
 PRODUCT_PACKAGES += \
@@ -120,7 +99,7 @@ PRODUCT_PACKAGES += \
 # easy way to extend to add more packages
 -include vendor/extra/product.mk
 
-PRODUCT_PACKAGE_OVERLAYS += vendor/slim/overlay/common
+PRODUCT_PACKAGE_OVERLAYS += vendor/updraft/overlay/common
 
 # Boot animation include
 ifneq ($(TARGET_SCREEN_WIDTH) $(TARGET_SCREEN_HEIGHT),$(space))
@@ -134,7 +113,7 @@ TARGET_BOOTANIMATION_SIZE := $(shell \
   fi )
 
 # get a sorted list of the sizes
-bootanimation_sizes := $(subst .zip,, $(shell ls vendor/slim/prebuilt/common/bootanimation))
+bootanimation_sizes := $(subst .zip,, $(shell ls vendor/updraft/prebuilt/common/bootanimation))
 bootanimation_sizes := $(shell echo -e $(subst $(space),'\n',$(bootanimation_sizes)) | sort -rn)
 
 # find the appropriate size and set
@@ -151,41 +130,41 @@ endef
 $(foreach size,$(bootanimation_sizes), $(call check_and_set_bootanimation,$(size)))
 
 PRODUCT_COPY_FILES += \
-    vendor/slim/prebuilt/common/bootanimation/$(TARGET_BOOTANIMATION_NAME).zip:system/media/bootanimation.zip
+    vendor/updraft/prebuilt/common/bootanimation/$(TARGET_BOOTANIMATION_NAME).zip:system/media/bootanimation.zip
 endif
 
 # Versioning System
-# KitKat SlimKat freeze code
+# KitKat Updraft freeze code
 PRODUCT_VERSION_MAJOR = 4.4.4
 PRODUCT_VERSION_MINOR = build
 PRODUCT_VERSION_MAINTENANCE = 6.4
-ifdef SLIM_BUILD_EXTRA
-    SLIM_POSTFIX := -$(SLIM_BUILD_EXTRA)
+ifdef UPDRAFT_BUILD_EXTRA
+    UPDRAFT_POSTFIX := -$(UPDRAFT_BUILD_EXTRA)
 endif
-ifndef SLIM_BUILD_TYPE
-    SLIM_BUILD_TYPE := UNOFFICIAL
+ifndef UPDRAFT_BUILD_TYPE
+    UPDRAFT_BUILD_TYPE := UNOFFICIAL
     PLATFORM_VERSION_CODENAME := UNOFFICIAL
-    SLIM_POSTFIX := -$(shell date +"%Y%m%d-%H%M")
+    UPDRAFT_POSTFIX := -$(shell date +"%Y%m%d-%H%M")
 endif
 
 # SlimIRC
-# export INCLUDE_SLIMIRC=1 for unofficial builds
-ifneq ($(filter WEEKLY OFFICIAL,$(SLIM_BUILD_TYPE)),)
-    INCLUDE_SLIMIRC = 1
+# export INCLUDE_UPDRAFTIRC=1 for unofficial builds
+ifneq ($(filter WEEKLY OFFICIAL,$(UPDRAFT_BUILD_TYPE)),)
+    INCLUDE_UPDRAFTIRC = 1
 endif
 
-ifneq ($(INCLUDE_SLIMIRC),)
+ifneq ($(INCLUDE_UPDRAFTIRC),)
     PRODUCT_PACKAGES += SlimIRC
 endif
 
 # Set all versions
-SLIM_VERSION := Slim-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)-$(SLIM_BUILD_TYPE)$(SLIM_POSTFIX)
-SLIM_MOD_VERSION := Slim-$(SLIM_BUILD)-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)-$(SLIM_BUILD_TYPE)$(SLIM_POSTFIX)
+UPDRAFT_VERSION := Updraft-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)-$(UPDRAFT_BUILD_TYPE)$(UPDRAFT_POSTFIX)
+UPDRAFT_MOD_VERSION := Updraft-$(UPDRAFT_BUILD)-$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE)-$(UPDRAFT_BUILD_TYPE)$(UPDRAFT_POSTFIX)
 
 PRODUCT_PROPERTY_OVERRIDES += \
     BUILD_DISPLAY_ID=$(BUILD_ID) \
-    slim.ota.version=$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE) \
-    ro.slim.version=$(SLIM_VERSION) \
-    ro.modversion=$(SLIM_MOD_VERSION) \
-    ro.slim.buildtype=$(SLIM_BUILD_TYPE)
+    slim.ota.version=$(PRODUCT_VERSION_MAJOR).$(PRODUCT_VERSION_MINOR).$(PRODUCT_VERSION_MAINTENANCE) \ # Keep this for now
+    ro.slim.version=$(UPDRAFT_VERSION) \ # Keep this for now
+    ro.modversion=$(UPDRAFT_MOD_VERSION) \ # Keep this for now
+    ro.slim.buildtype=$(UPDRAFT_BUILD_TYPE) # Keep this for now
 
